@@ -30,7 +30,7 @@ public class OrderEntity {
     private OrderStatus status;
 
     @Column(name = "active", nullable = false)
-    private Boolean isActive = true;
+    private Boolean active = true;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name="order_id")

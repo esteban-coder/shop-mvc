@@ -10,7 +10,7 @@ public class OrderItemResponseDTO {
 
     private Long productId;
 
-    private String productName;
+    private String productName;//mostrar de product
 
     private Integer quantity;
 

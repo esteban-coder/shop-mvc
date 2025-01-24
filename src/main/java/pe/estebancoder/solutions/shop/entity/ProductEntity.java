@@ -19,8 +19,6 @@ public class ProductEntity {
     @Column(nullable = false)
     private String description;
 
-    private String shortDescription;
-
     @Column(nullable = false)
     private Double price;
 
@@ -28,6 +26,6 @@ public class ProductEntity {
     private Integer stockQuantity;
 
     @Column(name = "active", nullable = false)
-    private Boolean isActive;
+    private Boolean active;
 
 }

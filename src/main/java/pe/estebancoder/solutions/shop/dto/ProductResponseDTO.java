@@ -1,12 +1,14 @@
 package pe.estebancoder.solutions.shop.dto;
 
-public record ProductResponseDTO (
-        Long id,
-        String name,
-        String description,
-        Double price,
-        Integer stockQuantity,
-        Boolean active
-)
+import lombok.Data;
+
+@Data
+public class ProductResponseDTO
 {
+    private Long id;
+    private String name;
+    private String description;
+    private Double price;
+    private Integer stockQuantity;
+    private Boolean active;
 }

@@ -1,4 +1,13 @@
 package pe.estebancoder.solutions.shop.service;
 
-public interface UserService {
+import pe.estebancoder.solutions.shop.dto.UserRequestDTO;
+import pe.estebancoder.solutions.shop.dto.UserResponseDTO;
+import pe.estebancoder.solutions.shop.dto.UserUpdateRequestDTO;
+
+import java.util.List;
+
+public interface UserService extends GenericService<UserResponseDTO, UserRequestDTO> {
+
+    boolean update(Long id, UserUpdateRequestDTO dto);
+
 }

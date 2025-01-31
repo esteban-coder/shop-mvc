@@ -9,6 +9,15 @@ public class UserResponseDTO{
     private String lastName;
     private String email;
     private Boolean active;
-
 }
 
+//public record UserResponseDTO(
+//         Long id,
+//         String firstName,
+//         String lastName,
+//         String email,
+//         Boolean active
+//)
+//{
+//    // methods
+//}

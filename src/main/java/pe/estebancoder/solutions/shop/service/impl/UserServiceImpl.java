@@ -1,5 +1,6 @@
 package pe.estebancoder.solutions.shop.service.impl;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pe.estebancoder.solutions.shop.dto.UserResponseDTO;
 import pe.estebancoder.solutions.shop.dto.UserRequestDTO;
@@ -19,19 +20,30 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public UserResponseDTO create(UserRequestDTO request) {
-        UserEntity user = userMapper.mapToEntity(request);
+        if(userRepository.existsByEmail(request.getEmail())) {
+            throw new RuntimeException("Email already exists");
+        }
+
+        //UserEntity user = userMapper.mapToEntity(request);
+
+        UserEntity user = new UserEntity();
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+
         return userMapper.mapToDto(userRepository.save(user));
     }
-
-
 
     @Override
     public UserResponseDTO getById(Long id) {
@@ -54,12 +66,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean update(Long id, UserRequestDTO dto) {
+    public UserResponseDTO update(Long id, UserRequestDTO dto) {
         throw new RuntimeException("Not implemented yet");
     }
 
     @Override
-    public boolean update(Long id, UserUpdateRequestDTO dto) {
-        return false;
+    public UserResponseDTO update(Long id, UserUpdateRequestDTO dto) {
+        UserEntity user = findUserOrThrow(id);
+        if(!user.getEmail().equals(dto.getEmail()) && userRepository.existsByEmail(dto.getEmail())) {
+            throw new RuntimeException("Email already exists");
+        }
+        user.setEmail(dto.getEmail());
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
+
+        return userMapper.mapToDto(userRepository.save(user));
     }
 }

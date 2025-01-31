@@ -48,8 +48,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean update(Long id, ProductRequestDTO product) {
-        return false;
+    public ProductResponseDTO update(Long id, ProductRequestDTO product) {
+        return null;
     }
 
     @Override

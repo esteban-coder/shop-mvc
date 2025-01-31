@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface UserService extends GenericService<UserResponseDTO, UserRequestDTO> {
 
-    boolean update(Long id, UserUpdateRequestDTO dto);
+    UserResponseDTO update(Long id, UserUpdateRequestDTO dto);
 
 }

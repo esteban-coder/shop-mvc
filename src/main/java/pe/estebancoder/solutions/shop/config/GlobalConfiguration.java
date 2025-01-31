@@ -16,6 +16,14 @@ public class GlobalConfiguration {
 
     @Bean
     public ModelMapper modelMapper() {
+//        https://github.com/modelmapper/modelmapper/issues/546#issuecomment-1068925341
+
+//        <dependency>
+//                <groupId>org.modelmapper</groupId>
+//                <artifactId>modelmapper-module-record</artifactId>
+//                <version>1.0.0</version>
+//        </dependency>
+
 //        var modelMapper = new ModelMapper();
 //        modelMapper.registerModule(new RecordModule());
 //        return modelMapper;

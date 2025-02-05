@@ -83,7 +83,9 @@ public class OrderServiceImpl implements OrderService {
         // 2.4 cambiar estado de la orden
         order.setStatus(OrderStatus.CONFIRMED);
 
-        return mapToDto(orderRepository.save(order));
+        OrderEntity orderEntity = orderRepository.save(order);
+
+        return mapToDto(orderEntity);
     }
 
     @Override
@@ -107,7 +109,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderResponseDTO cancelOrder(Long id) {
+        //startTransaction()
         // 1. buscar la orden
         OrderEntity order = findOrderOrThrow(id);
 
@@ -126,6 +130,7 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(OrderStatus.CANCELLED);
 
         return mapToDto(orderRepository.save(order));
+        //commit
     }
 
     private OrderEntity findOrderOrThrow(Long id) {

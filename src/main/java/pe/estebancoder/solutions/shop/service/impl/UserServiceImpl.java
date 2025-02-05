@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean validateUser(Long id) {
-        return false;
+        return userRepository.findByIdAndActiveTrue(id).isPresent();
     }
 
     @Override

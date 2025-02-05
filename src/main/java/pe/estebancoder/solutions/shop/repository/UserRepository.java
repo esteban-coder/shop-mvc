@@ -8,6 +8,7 @@ import pe.estebancoder.solutions.shop.entity.ProductEntity;
 import pe.estebancoder.solutions.shop.entity.UserEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
@@ -15,6 +16,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     boolean existsByEmail(String email);
 
     List<UserEntity> findByActiveTrue();
+    Optional<UserEntity> findByIdAndActiveTrue(Long id);
 
 
 }

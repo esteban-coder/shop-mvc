@@ -26,6 +26,6 @@ public class ProductEntity {
     private Integer stockQuantity;
 
     @Column(name = "active", nullable = false)
-    private Boolean active;
+    private Boolean active = true;
 
 }

@@ -1,6 +1,7 @@
 package pe.estebancoder.solutions.shop.dto;
 
 import lombok.Data;
+import org.hibernate.boot.model.process.internal.UserTypeResolution;
 
 @Data
 public class UserResponseDTO{
@@ -9,7 +10,10 @@ public class UserResponseDTO{
     private String lastName;
     private String email;
     private Boolean active;
+
 }
+
+
 
 //public record UserResponseDTO(
 //         Long id,

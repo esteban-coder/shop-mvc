@@ -1,5 +1,6 @@
 package pe.estebancoder.solutions.shop.service.impl;
 
+import jakarta.validation.constraints.Email;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pe.estebancoder.solutions.shop.dto.UserResponseDTO;
@@ -7,12 +8,15 @@ import pe.estebancoder.solutions.shop.dto.UserRequestDTO;
 import pe.estebancoder.solutions.shop.dto.UserResponseDTO;
 import pe.estebancoder.solutions.shop.dto.UserUpdateRequestDTO;
 import pe.estebancoder.solutions.shop.entity.UserEntity;
+import pe.estebancoder.solutions.shop.exception.EmailAlreadyExistsException;
+import pe.estebancoder.solutions.shop.exception.UserNotFoundException;
 import pe.estebancoder.solutions.shop.mapper.UserMapper;
 import pe.estebancoder.solutions.shop.repository.UserRepository;
 import pe.estebancoder.solutions.shop.service.UserService;
 import pe.estebancoder.solutions.shop.service.UserService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,7 +35,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDTO create(UserRequestDTO request) {
         if(userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already exists");
+            throw new EmailAlreadyExistsException("Email ya registrado: " + request.getEmail());
         }
 
         //UserEntity user = userMapper.mapToEntity(request);
@@ -52,17 +56,20 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserEntity findUserOrThrow(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User with id: " + id + " not found"));
     }
 
     @Override
     public List<UserResponseDTO> getAll() {
-        return userMapper.mapToListDto(userRepository.findAll());
+        return userRepository.findByActiveTrue()
+                .stream().map(userMapper::mapToDto).toList();
     }
 
     @Override
     public void delete(Long id) {
-
+        UserEntity user = findUserOrThrow(id);
+        user.setActive(false);
+        userRepository.save(user);
     }
 
     @Override
@@ -74,12 +81,22 @@ public class UserServiceImpl implements UserService {
     public UserResponseDTO update(Long id, UserUpdateRequestDTO dto) {
         UserEntity user = findUserOrThrow(id);
         if(!user.getEmail().equals(dto.getEmail()) && userRepository.existsByEmail(dto.getEmail())) {
-            throw new RuntimeException("Email already exists");
+            throw new EmailAlreadyExistsException("Email already exists: " + dto.getEmail() );
         }
         user.setEmail(dto.getEmail());
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
 
         return userMapper.mapToDto(userRepository.save(user));
+    }
+
+    @Override
+    public boolean validateUser(Long id) {
+        return false;
+    }
+
+    @Override
+    public Optional<UserResponseDTO> getUserByEmail(String email) {
+        return Optional.empty();
     }
 }

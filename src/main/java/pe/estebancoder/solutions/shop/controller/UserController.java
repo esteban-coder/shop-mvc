@@ -11,6 +11,7 @@ import pe.estebancoder.solutions.shop.dto.UserUpdateRequestDTO;
 import pe.estebancoder.solutions.shop.service.UserService;
 import pe.estebancoder.solutions.shop.service.impl.UserServiceImpl;
 
+import java.time.ZoneId;
 import java.util.List;
 
 @RestController

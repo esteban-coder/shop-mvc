@@ -12,28 +12,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class ProductMapper implements GenericMapper<ProductEntity, ProductRequestDTO, ProductResponseDTO> {
-
-    private final ModelMapper modelMapper;
+public class ProductMapper extends AbstractMapper<ProductEntity, ProductRequestDTO, ProductResponseDTO> {
 
     public ProductMapper(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
+        super(modelMapper);
     }
 
-    public ProductResponseDTO mapToDto(ProductEntity product) {
-        return modelMapper.map(product, ProductResponseDTO.class);
+    @Override
+    public Class<ProductEntity> getEntityClass() {
+        return ProductEntity.class;
     }
 
-    public ProductEntity mapToEntity(ProductRequestDTO dto){
-        return modelMapper.map(dto, ProductEntity.class);
+    @Override
+    public Class<ProductResponseDTO> getDtoClass() {
+        return ProductResponseDTO.class;
     }
 
-    public List<ProductResponseDTO> mapToListDto(List<ProductEntity> lstE){
-        return lstE.stream().map(this::mapToDto).toList();
-    }
-
-    public List<ProductEntity> mapToListEntity(List<ProductRequestDTO> lstD){
-        return lstD.stream().map(this::mapToEntity).toList();
-    }
 
 }

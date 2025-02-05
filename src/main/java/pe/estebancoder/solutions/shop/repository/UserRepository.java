@@ -12,9 +12,9 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-    @Query(value = "select ........ where id= :id..................", nativeQuery = true)
-    List<UserEntity> findByUsername(@Param("id") String userId);
-
-
     boolean existsByEmail(String email);
+
+    List<UserEntity> findByActiveTrue();
+
+
 }

@@ -7,28 +7,31 @@ import pe.estebancoder.solutions.shop.entity.ProductEntity;
 
 import java.util.List;
 
-public abstract class AbstractMapper<E, Req, Resp> implements GenericMapper<E, Req, Resp> {
-/*
+public abstract class AbstractMapper<E, Req, Resp> /*implements GenericMapper<E, Req, Resp>*/ {
+
     private final ModelMapper modelMapper;
 
     public AbstractMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
 
-    public ProductResponseDTO mapToDto(ProductEntity product) {
-        return modelMapper.map(product, ProductResponseDTO.class);
+    public Resp mapToDto(E product) {
+        return modelMapper.map(product, getDtoClass());
     }
 
-    public ProductEntity mapToEntity(ProductRequestDTO dto){
-        return modelMapper.map(dto, ProductEntity.class);
+    public E mapToEntity(Req dto){
+        return modelMapper.map(dto, getEntityClass());
     }
 
-    public List<ProductResponseDTO> mapToListDto(List<ProductEntity> lstE){
+    public List<Resp> mapToListDto(List<E> lstE){
         return lstE.stream().map(this::mapToDto).toList();
     }
 
-    public List<ProductEntity> mapToListEntity(List<ProductRequestDTO> lstD){
+    public List<E> mapToListEntity(List<Req> lstD){
         return lstD.stream().map(this::mapToEntity).toList();
     }
-*/
+
+    public abstract Class<E> getEntityClass();
+    public abstract Class<Resp> getDtoClass();
+
 }

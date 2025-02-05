@@ -7,7 +7,6 @@ import pe.estebancoder.solutions.shop.mapper.UserMapper;
 import pe.estebancoder.solutions.shop.repository.UserRepository;
 import pe.estebancoder.solutions.shop.service.UserService;
 import pe.estebancoder.solutions.shop.service.impl.UserServiceImpl;
-import pe.estebancoder.solutions.shop.service.impl.UserServiceImpl2;
 
 //@Configuration
 public class ServiceConfiguration {

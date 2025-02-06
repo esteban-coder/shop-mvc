@@ -4,10 +4,13 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pe.estebancoder.solutions.shop.dto.CustomResponseDTO;
+import pe.estebancoder.solutions.shop.dto.OrderResponseDTO;
 import pe.estebancoder.solutions.shop.dto.ProductRequestDTO;
 import pe.estebancoder.solutions.shop.dto.ProductResponseDTO;
 import pe.estebancoder.solutions.shop.service.ProductService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -21,9 +24,14 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponseDTO> createProduct(@Valid @RequestBody ProductRequestDTO request){
-        ProductResponseDTO userDTO = productService.create(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userDTO);
+    public ResponseEntity<?> createProduct(@Valid @RequestBody ProductRequestDTO request){
+        ProductResponseDTO productDTO = productService.create(request);
+        CustomResponseDTO<ProductResponseDTO> responseDTO = new CustomResponseDTO<>();
+        responseDTO.setData(productDTO);
+        responseDTO.setTimestamp(LocalDateTime.now());
+        responseDTO.setStatus(HttpStatus.CREATED.name());
+        responseDTO.setUri("/api/v1/products/" + productDTO.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
     @GetMapping("/{id}")

@@ -4,9 +4,12 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pe.estebancoder.solutions.shop.dto.CustomResponseDTO;
 import pe.estebancoder.solutions.shop.dto.OrderRequestDTO;
 import pe.estebancoder.solutions.shop.dto.OrderResponseDTO;
 import pe.estebancoder.solutions.shop.service.OrderService;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/v1/orders")
@@ -20,9 +23,15 @@ public class OrderController {
 
 
     @PostMapping
-    public ResponseEntity<OrderResponseDTO> createOrder(@Valid @RequestBody OrderRequestDTO request){
-        OrderResponseDTO userDTO = orderService.create(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userDTO);
+    public ResponseEntity<?> createOrder(@Valid @RequestBody OrderRequestDTO request) throws Exception{
+        OrderResponseDTO orderDTO = orderService.create(request);
+        CustomResponseDTO<OrderResponseDTO> responseDTO = new CustomResponseDTO<>();
+        responseDTO.setData(orderDTO);
+        responseDTO.setTimestamp(LocalDateTime.now());
+        responseDTO.setStatus(HttpStatus.CREATED.name());
+        responseDTO.setUri("/api/v1/orders/" + orderDTO.getId());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
     @PutMapping("/cancel/{id}")

@@ -1,5 +1,6 @@
 package pe.estebancoder.solutions.shop.service;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface GenericService<Resp, Req> {

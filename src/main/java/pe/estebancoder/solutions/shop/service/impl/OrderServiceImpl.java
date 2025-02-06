@@ -2,6 +2,7 @@ package pe.estebancoder.solutions.shop.service.impl;
 
 import org.hibernate.metamodel.mapping.ordering.ast.OrderByComplianceViolation;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import pe.estebancoder.solutions.shop.dto.*;
 import pe.estebancoder.solutions.shop.entity.OrderEntity;
@@ -14,12 +15,14 @@ import pe.estebancoder.solutions.shop.service.OrderService;
 import pe.estebancoder.solutions.shop.service.ProductService;
 import pe.estebancoder.solutions.shop.service.UserService;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+//@Transactional(readOnly = true)
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
@@ -32,8 +35,13 @@ public class OrderServiceImpl implements OrderService {
         this.productService = productService;
     }
 
+//    public OrderResponseDTO preCreate(OrderRequestDTO dto){
+//        //logica inicial
+//        return create(dto);
+//    }
+
     @Override
-    @Transactional
+    @Transactional()
     public OrderResponseDTO create(OrderRequestDTO dto) {
         // 1. Validar Usuario
         if(!userService.validateUser(dto.getUserId())){
@@ -85,10 +93,22 @@ public class OrderServiceImpl implements OrderService {
 
         OrderEntity orderEntity = orderRepository.save(order);
 
+        // logica de negocio
+        // usar la orden que acabas de grabar en BD
+
+        // READ_UNCOMIT =>> LECTURA SUCIAS
+        // READ_COMMITED => LA TX QUE CREA ESA SOLA PUEDER
+        // SERIABLIZABE => NADIE PUEDE VER ESA FILA EN BD
+
+//        if(1==1){
+//            throw new UserNotValidException("****************** Error ******************");
+//        }
+
         return mapToDto(orderEntity);
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public OrderResponseDTO update(Long id, OrderRequestDTO dto) {
         return null;
     }
